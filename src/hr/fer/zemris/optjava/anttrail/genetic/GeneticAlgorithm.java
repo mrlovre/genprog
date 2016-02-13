@@ -1,6 +1,6 @@
 package hr.fer.zemris.optjava.anttrail.genetic;
 
-import static hr.fer.zemris.optjava.anttrail.config.Configuration.CROSSING_RATE;
+import static hr.fer.zemris.optjava.anttrail.config.Configuration.*;
 import static hr.fer.zemris.optjava.anttrail.config.Configuration.ELITIST_MODE;
 import static hr.fer.zemris.optjava.anttrail.config.Configuration.MAXIMUM_GENERATIONS;
 import static hr.fer.zemris.optjava.anttrail.config.Configuration.MAXIMUM_INITIAL_TREE_DEPTH;
@@ -43,6 +43,7 @@ public class GeneticAlgorithm {
                     .map(population::get).max((l, r) -> Double.compare(
                         l.evaluateFitness(stats), r.evaluateFitness(stats))).get();
                 double p = RandomGenerator.nextDouble();
+                Chromosome newChromosome;
                 if (p < CROSSING_RATE) {
                     int winnerIndex = population.indexOf(winner);
                     List<Integer> picksOther = pickRandom(max, TOURNAMENT_SELECTION_SIZE,
@@ -50,15 +51,16 @@ public class GeneticAlgorithm {
                     Chromosome winnerOther = picksOther.stream()
                         .map(population::get).max((l, r) -> Double.compare(
                             l.evaluateFitness(stats), r.evaluateFitness(stats))).get();
-                    Chromosome offspring = winner.crossWith(winnerOther);
-                    newPopulation.add(offspring);
+                    newChromosome = winner.crossWith(winnerOther);
                 } else if (p - CROSSING_RATE < MUTATION_RATE) {
-                    Chromosome mutant = winner.mutate();
-                    newPopulation.add(mutant);
+                    newChromosome = winner.mutate();
                 } else {
-                    Chromosome replicant = winner.replicate();
-                    newPopulation.add(replicant);
+                    newChromosome = winner.replicate();
                 }
+                while (newChromosome.getTree().queryNodeCount() > MAXIMUM_NODE_COUNT) {
+                    newChromosome.truncate();
+                }
+                newPopulation.add(newChromosome);
             }
             Chromosome best = population.stream().max((l, r) -> Double.compare(
                 l.evaluateFitness(stats), r.evaluateFitness(stats))).get();

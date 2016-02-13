@@ -32,7 +32,13 @@ public abstract class TerminalNode implements INode {
     }
     
     @Override
+    public int queryNodeCount() {
+        return 1;
+    }
+    
+    @Override
     public TerminalNode clone() {
         return this;
     }
+    
 }

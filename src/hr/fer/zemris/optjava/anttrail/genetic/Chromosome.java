@@ -1,6 +1,6 @@
 package hr.fer.zemris.optjava.anttrail.genetic;
 
-import static hr.fer.zemris.optjava.anttrail.config.Configuration.MAXIMUM_TREE_DEPTH;
+import static hr.fer.zemris.optjava.anttrail.config.Configuration.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +88,25 @@ public class Chromosome {
             ((NonTerminalNode) parent).getChildren().set(traversal.get(p), replacement);
         }
         return offspring;
+    }
+
+    public void truncate() {
+        List<Integer> traversal = randomTraversal(tree);
+        int totalDepth = traversal.size() / 2;
+        int p = RandomGenerator.nextInt(totalDepth);
+        int remainingMaxDepth = Math.max(0, totalDepth - p - 1);
+        int r = RandomGenerator.nextInt(remainingMaxDepth);
+        r = 1;
+        INode replacement = INode.growTree(r, false);
+        INode parent = tree;
+        if (p == 0) {
+            tree = replacement;
+        } else {
+            for (int i = 0; i < p; i++) {
+                parent = ((NonTerminalNode) parent).getChildren().get(traversal.get(i));
+            }
+            ((NonTerminalNode) parent).getChildren().set(traversal.get(p), replacement);
+        }
     }
 
     private List<Integer> randomTraversal(INode tree) {

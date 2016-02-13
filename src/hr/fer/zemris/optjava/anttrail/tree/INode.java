@@ -55,4 +55,6 @@ public interface INode {
     
     public INode clone();
 
+    public int queryNodeCount();
+    
 }

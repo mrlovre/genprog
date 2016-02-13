@@ -46,7 +46,6 @@ public class AntTrailGA {
         SwingUtilities.invokeAndWait(() -> {
             MainWindow mainWindow = new MainWindow(chart, ant);
             ant.addAntChangeObserver(mainWindow);
-            chart.addChartObserver(mainWindow);
         });
         stats.evaluateTree(tree);
         // System.out.println(tree);

@@ -35,6 +35,11 @@ public abstract class NonTerminalNode implements INode {
     }
 
     @Override
+    public int queryNodeCount() {
+        return children.size() + children.stream().mapToInt(INode::queryNodeCount).sum();
+    }
+
+    @Override
     public NonTerminalNode clone() {
         return new NonTerminalNode(children.stream().map(INode::clone).collect(Collectors
             .toList())) {

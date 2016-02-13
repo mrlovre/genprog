@@ -16,11 +16,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import hr.fer.zemris.optjava.anttrail.ant.Ant;
 import hr.fer.zemris.optjava.anttrail.ant.AntChangeObserver;
 import hr.fer.zemris.optjava.anttrail.chart.Chart;
-import hr.fer.zemris.optjava.anttrail.chart.ChartObserver;
-import hr.fer.zemris.optjava.anttrail.chart.Tile;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame implements AntChangeObserver, ChartObserver {
+public class MainWindow extends JFrame implements AntChangeObserver {
 
     public MainWindow(Chart chart, Ant ant) {
         try {
@@ -66,11 +64,6 @@ public class MainWindow extends JFrame implements AntChangeObserver, ChartObserv
             e.printStackTrace();
         }
         repaint();
-    }
-
-    @Override
-    public void onChartChanged(Chart chart, int i, int j, Tile oldTile, Tile newTile) {
-//        repaint();
     }
 
 }

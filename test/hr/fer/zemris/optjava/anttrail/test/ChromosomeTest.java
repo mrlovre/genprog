@@ -18,7 +18,7 @@ import hr.fer.zemris.optjava.anttrail.tree.TerminalNode;
 public class ChromosomeTest {
 
     @BeforeClass
-    public void before() {
+    public static void before() {
         TerminalNode.terminalNodes.add(LeftNode.class);
         TerminalNode.terminalNodes.add(RightNode.class);
         TerminalNode.terminalNodes.add(MoveNode.class);
@@ -37,7 +37,7 @@ public class ChromosomeTest {
             Assert.assertTrue(mutant.getTree().queryDepth() <= 10);
         }
     }
-    
+
     @Test
     public void mutationTest2() {
         INode tree = INode.growTree(10, true);
@@ -48,15 +48,16 @@ public class ChromosomeTest {
             Assert.assertTrue(mutant.getTree().queryDepth() <= 10);
         }
     }
-    
+
     @Test
-    public void crossoverTest() {
-        INode tree = INode.growTree(10, true);
-        Chromosome chromosome = new Chromosome(tree);
-        Chromosome mutant;
+    public void crossWithTest() {
+        INode tree1 = INode.growTree(10, true);
+        INode tree2 = INode.growTree(10, true);
+        Chromosome chromosome1 = new Chromosome(tree1);
+        Chromosome chromosome2 = new Chromosome(tree2);
         for (int i = 0; i < 2000; i++) {
-            mutant = chromosome.mutate();
-            Assert.assertTrue(mutant.getTree().queryDepth() <= 10);
+            Chromosome offspring = chromosome1.crossWith(chromosome2);
+            Assert.assertTrue(offspring.getTree().queryDepth() <= 10);
         }
     }
 
